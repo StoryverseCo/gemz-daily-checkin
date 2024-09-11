@@ -17,12 +17,14 @@ contract GemzDailyCheckin with Deployable {
     }
 
     receive(msg: Add) {
+        self.counter += msg.amount;
+
         let sender: Address = sender();
         let tonCoins: Int = context().value;
 
-        if (tonCoins <= 0) {
-            throw(100);  // No funds sent in the transaction
-        }
+        dump(tonCoins);
+
+        require(tonCoins > 0, "No funds sent in the transaction"); // No funds sent in the transaction
 
         // Get current timestamp
         let current_time: Int = now();
@@ -35,11 +37,11 @@ contract GemzDailyCheckin with Deployable {
 
         // Check if the user can perform a daily check-in (24-hour limit)
         if (current_time - last_checkin < 86400) {
-            throw(101);  // Daily check-in already performed
+            require(current_time - last_checkin >= 86400, "Daily check-in already performed");  // Daily check-in already performed
+//            self.notify("Daily check-in already performed".asComment());
+//            throw(101);  // Daily check-in already performed
         }
 
-
-        self.counter += msg.amount;
         // Update last check-in time in the user_data dictionary
         self.user_data.set(sender, current_time);
 
@@ -61,5 +63,9 @@ contract GemzDailyCheckin with Deployable {
             return self.user_data.get(sender)!!;
         }
         return 0;  // User not found
+    }
+
+    get fun all_checkins(): map<Address, Int> {
+        return self.user_data;
     }
 }

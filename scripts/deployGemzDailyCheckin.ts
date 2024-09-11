@@ -16,7 +16,7 @@ export async function run(provider: NetworkProvider) {
         }
     );
 
-    await provider.waitForDeploy(gemzDailyCheckin.address);
+    await provider.waitForDeploy(gemzDailyCheckin.address, 25);
 
     console.log('ID', await gemzDailyCheckin.getId());
 }
