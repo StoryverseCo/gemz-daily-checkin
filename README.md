@@ -26,4 +26,4 @@
 `npx blueprint create ContractName` or `yarn blueprint create ContractName`
 
 ### Current contract address deployed
-`EQBj4jX-6KSEY5oFd98sdIZB5YrnOWIOvskD_Mf8VuJ4EAeB`
+`EQCYrdes6RgbOEaDmJDQR1grbcmbr-2FqSGcKHiMrNPP5m4w`

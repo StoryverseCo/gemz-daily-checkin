@@ -46,11 +46,11 @@ describe('GemzDailyCheckin', () => {
 
             const increaser = await blockchain.treasury('increaser' + i);
 
-            const counterBefore = await gemzDailyCheckin.getCounter();
+            const counterBefore = await gemzDailyCheckin.getCounter(increaser.address);
 
             console.log('counter before increasing', counterBefore);
 
-            const increaseBy = BigInt(Math.floor(Math.random() * 100));
+            const increaseBy = 1n;
 
             console.log('increasing by', increaseBy);
 
@@ -59,12 +59,7 @@ describe('GemzDailyCheckin', () => {
                 {
                     value: toNano('0.05'),
                 },
-                {
-                    $$type: 'Add',
-                    queryId: 0n,
-                    amount: increaseBy,
-                }
-            );
+                'Checkin',            );
 
             expect(increaseResult.transactions).toHaveTransaction({
                 from: increaser.address,
@@ -72,13 +67,15 @@ describe('GemzDailyCheckin', () => {
                 success: true,
             });
 
-            const counterAfter = await gemzDailyCheckin.getCounter();
+            const counterAfter = await gemzDailyCheckin.getCounter(increaser.address);
 
             console.log('counter after increasing', counterAfter);
 
             const lastCheckin = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
 
             console.log(`last checkin from ${increaser.getSender().address}`, lastCheckin);
+
+            console.log('checkins', await gemzDailyCheckin.getAllCheckins());
 
             expect(counterAfter).toBe(counterBefore + increaseBy);
             expect(lastCheckin).toBeTruthy();
@@ -87,10 +84,10 @@ describe('GemzDailyCheckin', () => {
 
     it('should not increase counter the second time', async () => {
         let increaser = await blockchain.treasury('increaser');
-        const counterBefore = await gemzDailyCheckin.getCounter();
+        const counterBefore = await gemzDailyCheckin.getCounter(increaser.address);
         console.log('counter before increasing', counterBefore);
 
-        const increaseBy = BigInt(Math.floor(Math.random() * 100));
+        const increaseBy = 1n;
         console.log('increasing by', increaseBy);
 
         const increaseResult = await gemzDailyCheckin.send(
@@ -98,11 +95,7 @@ describe('GemzDailyCheckin', () => {
             {
                 value: toNano('0.05'),
             },
-            {
-                $$type: 'Add',
-                queryId: 0n,
-                amount: increaseBy,
-            }
+            'Checkin',
         );
 
         expect(increaseResult.transactions).toHaveTransaction({
@@ -111,7 +104,7 @@ describe('GemzDailyCheckin', () => {
             success: true,
         });
 
-        const counterAfter = await gemzDailyCheckin.getCounter();
+        const counterAfter = await gemzDailyCheckin.getCounter(increaser.address);
         console.log('counter after increasing', counterAfter);
 
         const lastCheckin = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
@@ -124,17 +117,14 @@ describe('GemzDailyCheckin', () => {
             {
                 value: toNano('0.05'),
             },
-            {
-                $$type: 'Add',
-                queryId: 0n,
-                amount: 1n,
-            }
+            'Checkin',
         );
 
-        const counterAfter2 = await gemzDailyCheckin.getCounter();
+        const counterAfter2 = await gemzDailyCheckin.getCounter(increaser.address);
         const lastCheckin2 = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
         expect(counterAfter2).toBe(counterAfter);
-        expect(lastCheckin2).toBe(lastCheckin);
+        expect(lastCheckin2.timestamp).toBe(lastCheckin.timestamp);
+        console.log('checkins', await gemzDailyCheckin.getAllCheckins());
 
     });
 });

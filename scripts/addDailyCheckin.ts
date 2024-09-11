@@ -2,10 +2,14 @@ import { Address, toNano } from '@ton/core';
 import { GemzDailyCheckin } from '../wrappers/GemzDailyCheckin';
 import { NetworkProvider, sleep } from '@ton/blueprint';
 
+process.env.WALLET_MNEMONIC = 'extend bread grid idle mansion want obscure lyrics donkey bitter swear sauce wealth marine bind beef blast vehicle ramp canyon earn renew menu jaguar';
+// process.env.WALLET_MNEMONIC = 'shed finger august weekend lesson cover coyote clock appear census chest offer casino medal grain oval hire above venue diary clever civil gift party';
+process.env.WALLET_VERSION = 'V4';
+
 export async function run(provider: NetworkProvider, args: string[]) {
     const ui = provider.ui();
 
-    const contractAddress = Address.parse('EQBj4jX-6KSEY5oFd98sdIZB5YrnOWIOvskD_Mf8VuJ4EAeB');
+    const contractAddress = Address.parse('EQCYrdes6RgbOEaDmJDQR1grbcmbr-2FqSGcKHiMrNPP5m4w');
 
     if (!(await provider.isContractDeployed(contractAddress))) {
         ui.write(`Error: Contract at address ${contractAddress} is not deployed!`);
@@ -14,21 +18,14 @@ export async function run(provider: NetworkProvider, args: string[]) {
 
     const gemzDailyCheckin = provider.open(GemzDailyCheckin.fromAddress(contractAddress));
 
-    const counterBefore = await gemzDailyCheckin.getCounter();
 
     const resp = await gemzDailyCheckin.send(
         provider.sender(),
         {
             value: toNano('0.05'),
         },
-        {
-            $$type: 'Add',
-            queryId: 0n,
-            amount: 1n,
-        }
+        'Checkin',
     );
-
-    console.log('Response:', resp);
 
     ui.write('Waiting for counter to increase...');
 
