@@ -14,7 +14,7 @@ export async function run(provider: NetworkProvider, args: string[]) {
     const client = new TonClient({ endpoint });
 
     // open Counter instance by address
-    const counterAddress = Address.parse('EQCYrdes6RgbOEaDmJDQR1grbcmbr-2FqSGcKHiMrNPP5m4w');
+    const counterAddress = Address.parse('EQC_0ScHnb7bVoyInXLkZ2G4XRHg97S9XrPKCUDaO1ZRyFhZ');
     if (!(await provider.isContractDeployed(counterAddress))) {
         ui.write(`Error: Contract at address ${counterAddress} is not deployed!`);
         return;

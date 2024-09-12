@@ -9,7 +9,7 @@ process.env.WALLET_VERSION = 'V4';
 export async function run(provider: NetworkProvider, args: string[]) {
     const ui = provider.ui();
 
-    const contractAddress = Address.parse('EQCYrdes6RgbOEaDmJDQR1grbcmbr-2FqSGcKHiMrNPP5m4w');
+    const contractAddress = Address.parse('EQC_0ScHnb7bVoyInXLkZ2G4XRHg97S9XrPKCUDaO1ZRyFhZ');
 
     if (!(await provider.isContractDeployed(contractAddress))) {
         ui.write(`Error: Contract at address ${contractAddress} is not deployed!`);
@@ -24,7 +24,7 @@ export async function run(provider: NetworkProvider, args: string[]) {
         {
             value: toNano('0.05'),
         },
-        'Checkin',
+        'Gemz Checkin',
     );
 
     ui.write('Waiting for counter to increase...');

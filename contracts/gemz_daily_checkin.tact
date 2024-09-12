@@ -14,7 +14,7 @@ contract GemzDailyCheckin with Deployable {
         self.id = id;
     }
 
-    receive("Checkin") {
+    receive("Gemz Checkin") {
 
         let sender: Address = sender();
         let tonCoins: Int = context().value;

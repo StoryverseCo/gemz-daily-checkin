@@ -59,7 +59,7 @@ describe('GemzDailyCheckin', () => {
                 {
                     value: toNano('0.05'),
                 },
-                'Checkin',            );
+                'Gemz Checkin',            );
 
             expect(increaseResult.transactions).toHaveTransaction({
                 from: increaser.address,
@@ -95,7 +95,7 @@ describe('GemzDailyCheckin', () => {
             {
                 value: toNano('0.05'),
             },
-            'Checkin',
+            'Gemz Checkin',
         );
 
         expect(increaseResult.transactions).toHaveTransaction({
@@ -117,7 +117,7 @@ describe('GemzDailyCheckin', () => {
             {
                 value: toNano('0.05'),
             },
-            'Checkin',
+            'Gemz Checkin',
         );
 
         const counterAfter2 = await gemzDailyCheckin.getCounter(increaser.address);
