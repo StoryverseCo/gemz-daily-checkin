@@ -3,10 +3,6 @@ import { TonClient, Address } from "@ton/ton";
 import { GemzDailyCheckin } from '../wrappers/GemzDailyCheckin';
 import { NetworkProvider } from '@ton/blueprint';
 
-// process.env.WALLET_MNEMONIC = 'extend bread grid idle mansion want obscure lyrics donkey bitter swear sauce wealth marine bind beef blast vehicle ramp canyon earn renew menu jaguar';
-process.env.WALLET_MNEMONIC = 'shed finger august weekend lesson cover coyote clock appear census chest offer casino medal grain oval hire above venue diary clever civil gift party';
-process.env.WALLET_VERSION = 'V4';
-
 export async function run(provider: NetworkProvider, args: string[]) {
     const ui = provider.ui();
     // initialize ton rpc client on mainnet
