@@ -1,0 +1,11 @@
+{
+  "$schema": "http://raw.githubusercontent.com/tact-lang/tact/main/schemas/configSchema.json",
+  "projects": [{
+    "name": "sample_jetton",
+    "path": "./contracts/sample_jetton.tact",
+    "options": {
+      "debug": true
+    },
+    "output": ""
+  }]
+}
