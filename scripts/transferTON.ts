@@ -5,7 +5,7 @@ import { NetworkProvider, sleep } from '@ton/blueprint';
 export async function run(provider: NetworkProvider, args: string[]) {
     const ui = provider.ui();
 
-    const contractAddress = Address.parse('EQC_0ScHnb7bVoyInXLkZ2G4XRHg97S9XrPKCUDaO1ZRyFhZ');
+    const contractAddress = Address.parse('EQCPoRo17IT_-KUngSrPl3xYdsm_bcF2ttCDy1Zg-86yw47t');
 
     if (!(await provider.isContractDeployed(contractAddress))) {
         ui.write(`Error: Contract at address ${contractAddress} is not deployed!`);
@@ -21,8 +21,8 @@ export async function run(provider: NetworkProvider, args: string[]) {
             value: toNano('0.05'),
         },
         {
-            $$type: 'Transfer',
-            amount: toNano('0.04'),
+            $$type: 'Withdraw',
+            amount: toNano('0.05'),
         },
     );
 
