@@ -49,19 +49,9 @@ contract GemzDailyCheckin with Deployable {
         self.user_data.set(sender, Checkin{timestamp: current_time, counter: last_checkin.counter + 1});
 
         // Notify the caller that the receiver was executed and forward remaining value back
-//        self.notify("Cashback".asComment());
-        send(SendParameters{
-            bounce: true,
-            to: self.owner,
-            value: 0,
-            mode: SendIgnoreErrors,
-            body: "TON transferred to deployer's wallet".asComment(),
-            code: null,
-            data: null
-        });
+        self.notify("Cashback".asComment());
     }
 
-    // New receive function to transfer TON to deployer's wallet
     receive(msg: Withdraw) {
         require(sender() == self.owner, "Only deployer is allowed to withdraw");
         let amount: Int = min(msg.amount, myBalance() - context().value - self.MinTonForStorage);
@@ -77,11 +67,6 @@ contract GemzDailyCheckin with Deployable {
     get fun balance(): Int {
         return myBalance();
     }
-
-    get fun owner(): Address {
-        return self.owner;
-    }
-
 
     get fun counter(sender: Address): Int {
         if (self.user_data.get(sender) != null) {

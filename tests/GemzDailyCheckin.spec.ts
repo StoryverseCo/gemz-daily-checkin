@@ -149,9 +149,6 @@ describe('GemzDailyCheckin', () => {
         const balanceAfter = await gemzDailyCheckin.getBalance();
         expect(balanceAfter).toBeGreaterThan(balanceBefore);
 
-        const owner = await gemzDailyCheckin.getOwner();
-        expect(owner).toEqualAddress(deployer.address);
-
         // transfer to deployer
         await gemzDailyCheckin.send(
             deployer.getSender(),
@@ -166,6 +163,6 @@ describe('GemzDailyCheckin', () => {
 
         const balanceAfterTransfer = await gemzDailyCheckin.getBalance();
         console.log('balance after transfer', balanceAfterTransfer);
-        expect(balanceAfterTransfer).toBeLessThan(balanceAfter);
+        expect(balanceAfterTransfer).toEqual(toNano("0.01"));
     })
 });

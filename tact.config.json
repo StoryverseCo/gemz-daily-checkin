@@ -1,8 +1,8 @@
 {
   "$schema": "http://raw.githubusercontent.com/tact-lang/tact/main/schemas/configSchema.json",
   "projects": [{
-    "name": "sample_jetton",
-    "path": "./contracts/sample_jetton.tact",
+    "name": "gemz_daily_checkin",
+    "path": "./contracts/gemz_daily_checkin.tact",
     "options": {
       "debug": true
     },
