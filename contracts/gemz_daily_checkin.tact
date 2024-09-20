@@ -5,13 +5,21 @@ struct Checkin {
     counter: Int;
 }
 
+message Withdraw {
+    amount: Int as coins;
+}
+
+
 contract GemzDailyCheckin with Deployable {
     id: Int as uint32;
+    owner: Address;
     // Declare the dictionary to store user data
     user_data: map<Address, Checkin>;
+    const MinTonForStorage: Int = ton("0.01");
 
     init(id: Int) {
         self.id = id;
+        self.owner = sender();
     }
 
     receive("Gemz Checkin") {
@@ -42,6 +50,22 @@ contract GemzDailyCheckin with Deployable {
 
         // Notify the caller that the receiver was executed and forward remaining value back
         self.notify("Cashback".asComment());
+    }
+
+    receive(msg: Withdraw) {
+        require(sender() == self.owner, "Only deployer is allowed to withdraw");
+        let amount: Int = min(msg.amount, myBalance() - context().value - self.MinTonForStorage);
+        require(amount > 0, "Insufficient balance");
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: amount,
+            mode: SendRemainingValue + SendIgnoreErrors
+        });
+    }
+
+    get fun balance(): Int {
+        return myBalance();
     }
 
     get fun counter(sender: Address): Int {

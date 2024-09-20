@@ -1,4 +1,4 @@
-import { toNano } from '@ton/core';
+import { Address, toNano } from '@ton/core';
 import { GemzDailyCheckin } from '../wrappers/GemzDailyCheckin';
 import { NetworkProvider } from '@ton/blueprint';
 

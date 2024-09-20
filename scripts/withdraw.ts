@@ -20,20 +20,11 @@ export async function run(provider: NetworkProvider, args: string[]) {
         {
             value: toNano('0.05'),
         },
-        'Gemz Checkin',
+        {
+            $$type: 'Withdraw',
+            amount: toNano('0.05'),
+        },
     );
 
-    ui.write('Waiting for counter to increase...');
-
-    // let counterAfter = await gemzDailyCheckin.getCounter();
-    // let attempt = 1;
-    // while (counterAfter === counterBefore) {
-    //     ui.setActionPrompt(`Attempt ${attempt}`);
-    //     await sleep(2000);
-    //     counterAfter = await gemzDailyCheckin.getCounter();
-    //     attempt++;
-    // }
-
-    ui.clearActionPrompt();
-    ui.write('Counter increased successfully!');
+    ui.write('Done!');
 }

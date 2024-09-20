@@ -11,9 +11,9 @@ describe('GemzDailyCheckin', () => {
     beforeEach(async () => {
         blockchain = await Blockchain.create();
 
-        gemzDailyCheckin = blockchain.openContract(await GemzDailyCheckin.fromInit(0n));
-
         deployer = await blockchain.treasury('deployer');
+
+        gemzDailyCheckin = blockchain.openContract(await GemzDailyCheckin.fromInit( 0n));
 
         const deployResult = await gemzDailyCheckin.send(
             deployer.getSender(),
@@ -127,4 +127,42 @@ describe('GemzDailyCheckin', () => {
         console.log('checkins', await gemzDailyCheckin.getAllCheckins());
 
     });
+
+    it('should not show balance', async () => {
+        const balanceBefore = await gemzDailyCheckin.getBalance();
+        console.log('Balance before', balanceBefore);
+
+        let increaseTimes = 10;
+        for (let i = 0; i < increaseTimes; i++) {
+            let increaser = await blockchain.treasury(`increaser + ${i}`);
+
+            await gemzDailyCheckin.send(
+                increaser.getSender(),
+                {
+                    value: toNano('0.05'),
+                },
+                'Gemz Checkin',
+            );
+        }
+
+
+        const balanceAfter = await gemzDailyCheckin.getBalance();
+        expect(balanceAfter).toBeGreaterThan(balanceBefore);
+
+        // transfer to deployer
+        await gemzDailyCheckin.send(
+            deployer.getSender(),
+            {
+                value: toNano('0.05'),
+            },
+            {
+                $$type: 'Withdraw',
+                amount: balanceAfter - 9000000n,
+            }
+        )
+
+        const balanceAfterTransfer = await gemzDailyCheckin.getBalance();
+        console.log('balance after transfer', balanceAfterTransfer);
+        expect(balanceAfterTransfer).toEqual(toNano("0.01"));
+    })
 });
