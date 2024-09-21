@@ -41,7 +41,13 @@ contract GemzDailyCheckin with Deployable {
         self.user_data.set(sender, Checkin{timestamp: current_time, counter: last_checkin.counter + 1});
 
         // Notify the caller that the receiver was executed and forward remaining value back
-        self.notify("Cashback".asComment());
+//        self.notify("Cashback".asComment());
+        send(SendParameters{
+            bounce: true,
+            to: sender(),
+            value: 0,
+            mode: SendRemainingValue | SendIgnoreErrors,
+            body: "Cashback".asComment()});
     }
 
     get fun counter(sender: Address): Int {
