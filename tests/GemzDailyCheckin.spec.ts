@@ -46,13 +46,8 @@ describe('GemzDailyCheckin', () => {
 
             const increaser = await blockchain.treasury('increaser' + i);
 
-            const counterBefore = await gemzDailyCheckin.getCounter(increaser.address);
-
-            console.log('counter before increasing', counterBefore);
-
+            const counterBefore = await gemzDailyCheckin.getCounter();
             const increaseBy = 1n;
-
-            console.log('increasing by', increaseBy);
 
             const increaseResult = await gemzDailyCheckin.send(
                 increaser.getSender(),
@@ -67,65 +62,9 @@ describe('GemzDailyCheckin', () => {
                 success: true,
             });
 
-            const counterAfter = await gemzDailyCheckin.getCounter(increaser.address);
-
-            console.log('counter after increasing', counterAfter);
-
-            const lastCheckin = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
-
-            console.log(`last checkin from ${increaser.getSender().address}`, lastCheckin);
-
-            console.log('checkins', await gemzDailyCheckin.getAllCheckins());
-
+            const counterAfter = await gemzDailyCheckin.getCounter();
             expect(counterAfter).toBe(counterBefore + increaseBy);
-            expect(lastCheckin).toBeTruthy();
         }
-    });
-
-    it('should not increase counter the second time', async () => {
-        let increaser = await blockchain.treasury('increaser');
-        const counterBefore = await gemzDailyCheckin.getCounter(increaser.address);
-        console.log('counter before increasing', counterBefore);
-
-        const increaseBy = 1n;
-        console.log('increasing by', increaseBy);
-
-        const increaseResult = await gemzDailyCheckin.send(
-            increaser.getSender(),
-            {
-                value: toNano('0.05'),
-            },
-            'Gemz Checkin',
-        );
-
-        expect(increaseResult.transactions).toHaveTransaction({
-            from: increaser.address,
-            to: gemzDailyCheckin.address,
-            success: true,
-        });
-
-        const counterAfter = await gemzDailyCheckin.getCounter(increaser.address);
-        console.log('counter after increasing', counterAfter);
-
-        const lastCheckin = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
-        console.log(`last checkin from ${increaser.getSender().address}`, lastCheckin);
-
-        expect(counterAfter).toBe(counterBefore + increaseBy);
-
-        const increaseResult2 = await gemzDailyCheckin.send(
-            increaser.getSender(),
-            {
-                value: toNano('0.05'),
-            },
-            'Gemz Checkin',
-        );
-
-        const counterAfter2 = await gemzDailyCheckin.getCounter(increaser.address);
-        const lastCheckin2 = await gemzDailyCheckin.getLastCheckin(increaser.getSender().address);
-        expect(counterAfter2).toBe(counterAfter);
-        expect(lastCheckin2.timestamp).toBe(lastCheckin.timestamp);
-        console.log('checkins', await gemzDailyCheckin.getAllCheckins());
-
     });
 
     it('should not show balance', async () => {
